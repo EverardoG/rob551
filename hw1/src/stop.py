@@ -35,7 +35,9 @@ class StopController():
         self.vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         
         # Setup subscriber for lidar data
-        self.lidar_sub = rospy.Subscriber('scan', LaserScan, self.scanCallback, queue_size=10)
+        # self.lidar_sub = rospy.Subscriber('scan', LaserScan, self.scanCallback, queue_size=10)
+        # Subscriber for stage_osu
+        self.lidar_sub = rospy.Subscriber('base_scan', LaserScan, self.scanCallback, queue_size=10)
 
     def driveForward(self, x_vel):
         t = Twist()
