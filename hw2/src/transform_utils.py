@@ -1,12 +1,13 @@
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 def processRawScanMsg(scan_msg):
     # Process all of the lidar points
     # Filter out any points where nothing was actually detected (Or if there are infs or something weird like that)
 
     # Turn scan into x,y points
-    distances = np.array(scan.ranges)
-    angles = np.linspace(scan.angle_min, scan.angle_max, len(distances))
+    distances = np.array(scan_msg.ranges)
+    angles = np.linspace(scan_msg.angle_min, scan_msg.angle_max, len(distances))
 
     # Filter out inf distances
     not_inf_bool = np.logical_not(np.isinf(distances))
@@ -51,3 +52,7 @@ def transformToWorldFrame(points_rf, robot_position, robot_angle):
     transformed_pts = rotated_pts + robot_position
     
     return transformed_pts
+
+def distance(pt1, pt2):
+    """Calculate the distance between two points"""
+    return np.linalg.norm(pt1-pt2)
