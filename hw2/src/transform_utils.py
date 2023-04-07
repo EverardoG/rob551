@@ -37,7 +37,7 @@ def extract2DPose(odom_msg):
     euler_angles = scipy_rotation.as_euler('zyx', degrees=False)
 
     # Return the position and angle in 2D plane
-    return position, euler_angles[2]
+    return position, euler_angles[2]+np.pi
 
 def transformToWorldFrame(points_rf, robot_position, robot_angle):
     # Construct rotation matrix from robot position and angle in world frame

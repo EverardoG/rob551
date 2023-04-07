@@ -2,9 +2,11 @@ import rospy
 
 from visualization_msgs.msg import Marker, MarkerArray
 
-def buildMarker(x, y, _id, namespace, marker_type, color, timestamp, delete=False):
+def buildLidarMarker(x, y, _id, namespace, frame_id, marker_type, color, timestamp, delete=False):
     marker = Marker()
-    marker.header.frame_id = "base_scan"
+    marker.header.frame_id = frame_id
+    # Name for gazebo simulator and turtlebot3
+    # marker.header.frame_id = "base_scan"
     # Rename for stage_osu
     # marker.header.frame_id = "base_laser_link"
     marker.header.stamp = timestamp
@@ -30,14 +32,14 @@ def buildMarker(x, y, _id, namespace, marker_type, color, timestamp, delete=Fals
 
     return marker
 
-def buildMarkerArray(pts, namespace, marker_type=Marker.SPHERE, color=(0.0,0.0,1.0), timestamp = None):
+def buildLidarMarkerArray(pts, namespace, frame_id, marker_type=Marker.SPHERE, color=(0.0,0.0,1.0), timestamp = None):
     timestamp = rospy.Time.now()
     marker_array = MarkerArray()
     id = 0
     for id, (x,y) in enumerate(pts):
-        marker_array.markers.append(buildMarker(x,y,id, namespace, marker_type, color, timestamp))
+        marker_array.markers.append(buildLidarMarker(x,y, id, namespace, frame_id, marker_type, color, timestamp))
     if id != 0: id += 1
     while id < 360:
-        marker_array.markers.append(buildMarker(0,0,id,namespace, marker_type, color, timestamp, delete=True))
+        marker_array.markers.append(buildLidarMarker(0,0,id,namespace, frame_id, marker_type, color, timestamp, delete=True))
         id += 1
     return marker_array
